@@ -18,14 +18,16 @@ class SunriseSunset(BotPlugin):
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
     @arg_botcmd('--time', dest='sun_time', type=str, default='sunrise')
-    def sun(self, msg, latitude, longitude, sun_time):
+    def solar(self, msg, latitude, longitude, sun_time):
         """Return next sun time"""
         return self.sun_send(msg, latitude, longitude, {sun_time: True})
 
     def sun_send(self, msg, latitude, longitude, parameters):
         """Lookup sun time"""
+        sunrise = False
         if 'sunrise' in parameters:
             sunrise = parameters['sunrise']
+        sunset = False
         if 'sunset' in parameters:
             sunset = parameters['sunset']
         # https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400&date=today
