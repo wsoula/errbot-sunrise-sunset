@@ -1,0 +1,9 @@
+[Core]
+Name = SunriseSunset
+Module = sunrisesunset
+
+[Documentation]
+Description = Return the sunrise or sunset for a latitude, longitude pair
+
+[Python]
+Version = 3
