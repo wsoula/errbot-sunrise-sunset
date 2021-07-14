@@ -3,6 +3,7 @@ import urllib.request
 import json
 import datetime
 import pytz
+from dateutil import tz
 from errbot import BotPlugin, botcmd, arg_botcmd, re_botcmd
 
 
@@ -71,6 +72,11 @@ class SunriseSunset(BotPlugin):
                     # Add '_begin' to times that have a begin and end attribute
                     if requested_time in ['astronomical_twilight', 'civil_twilight', 'nautical_twilight']:
                         requested_time = requested_time+'_begin'
-                    results[requested_time] = response['results'][requested_time]
+                    time = datetime.datetime.strptime(response['results'][requested_time], '%H:%M:%S %p')
+                    today = datetime.datetime.today()
+                    combined = datetime.datetime.combine(today.date(), time.time())
+                    combined_utc = pytz.timezone('UTC').localize(combined)
+                    combined_local = combined_utc.astimezone(tz=tz.gettz('America/Denver'))
+                    results[requested_time] = str(combined_local)
             return results
         return 'No results in response: '+str(response)
