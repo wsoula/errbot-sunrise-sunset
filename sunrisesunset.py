@@ -30,6 +30,21 @@ class SunriseSunset(BotPlugin):
         sunset = False
         if 'sunset' in parameters:
             sunset = parameters['sunset']
+        astronomical_twilight = False
+        if 'astronomical_twilight' in parameters:
+            astronomical_twilight = parameters['astronomical_twilight']
+        civil_twilight = False
+        if 'civil_twilight' in parameters:
+            civil_twilight = parameters['civil_twilight']
+        day_length = False
+        if 'day_length' in parameters:
+            day_length = parameters['day_length']
+        nautical_twilight = False
+        if 'nautical_twilight' in parameters:
+            nautical_twilight = parameters['nautical_twilight']
+        solar_noon = False
+        if 'solar_noon' in parameters:
+            solar_noon = parameters['solar_noon']
         # https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400&date=today
         url = 'https://api.sunrise-sunset.org/json?lat='+latitude+'&lng='+longitude
         page = urllib.request.Request(url)
@@ -40,9 +55,22 @@ class SunriseSunset(BotPlugin):
             requested_times.append('sunrise')
         if sunset:
             requested_times.append('sunset')
+        if astronomical_twilight:
+            requested_times.append('astronomical_twilight')
+        if civil_twilight:
+            requested_times.append('civil_twilight')
+        if day_length:
+            requested_times.append('day_length')
+        if nautical_twilight:
+            requested_times.append('nautical_twilight')
+        if solar_noon:
+            requested_times.append('solar_noon')
         if 'results' in response:
             for requested_time in requested_times:
                 if requested_time in response['results']:
+                    # Add '_begin' to times that have a begin and end attribute
+                    if requested_time in ['astronomical_twilight', 'civil_twilight', 'nautical_twilight']:
+                        requested_time = requested_time+'_begin'
                     results[requested_time] = response['results'][requested_time]
             return results
         return 'No results in response: '+str(response)
