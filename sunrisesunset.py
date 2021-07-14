@@ -17,7 +17,7 @@ class SunriseSunset(BotPlugin):
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
-    @arg_botcmd('--time', dest=sun_time, type=str, default='sunrise')
+    @arg_botcmd('--time', dest='sun_time', type=str, default='sunrise')
     def sun(self, msg, latitude, longitude, sun_time):
         """Return next sun time"""
         return self.sun_send(msg, latitude, longitude, {sun_time: True})
@@ -41,6 +41,6 @@ class SunriseSunset(BotPlugin):
         if 'results' in response:
             for requested_time in requested_times:
                 if requested_time in response['results']:
-                    results[requested_time] = response['results'][requested_time])
+                    results[requested_time] = response['results'][requested_time]
             return results
         return 'No results in response: '+str(response)
