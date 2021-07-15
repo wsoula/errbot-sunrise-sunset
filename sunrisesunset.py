@@ -67,23 +67,23 @@ class SunriseSunset(BotPlugin):
         response = json.loads(urllib.request.urlopen(page).read().decode('utf-8'))
         requested_times = []
         results = {}
-        if sunrise:
-            requested_times.append('sunrise')
-        if sunset:
-            requested_times.append('sunset')
         if astronomical_twilight:
             requested_times.append('astronomical_twilight_begin')
             requested_times.append('astronomical_twilight_end')
-        if civil_twilight:
-            requested_times.append('civil_twilight_begin')
-            requested_times.append('civil_twilight_end')
-        if day_length:
-            requested_times.append('day_length')
         if nautical_twilight:
             requested_times.append('nautical_twilight_begin')
             requested_times.append('nautical_twilight_end')
+        if civil_twilight:
+            requested_times.append('civil_twilight_begin')
+            requested_times.append('civil_twilight_end')
+        if sunrise:
+            requested_times.append('sunrise')
         if solar_noon:
             requested_times.append('solar_noon')
+        if sunset:
+            requested_times.append('sunset')
+        if day_length:
+            requested_times.append('day_length')
         if 'results' in response:
             for requested_time in requested_times:
                 if requested_time in response['results'] and requested_time != 'day_length':
@@ -95,5 +95,8 @@ class SunriseSunset(BotPlugin):
                     results[requested_time] = str(combined_local)
                 if requested_time == 'day_length':
                     results[requested_time] = str(response['results'][requested_time])
-            return results
+            result_string = ''
+            for key in results:
+                result_string = result_string + key + '=' + results[key] + '\n'
+            return result_string
         return 'No results in response: '+str(response)
