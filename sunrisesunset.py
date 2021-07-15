@@ -18,6 +18,12 @@ class SunriseSunset(BotPlugin):
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
+    def sunset(self, msg, latitude, longitude):
+        """Return next sunrise"""
+        return self.sun_send(msg, latitude, longitude, {'sunset': True})
+
+    @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
+    @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
     @arg_botcmd('--time', dest='sun_time', type=str, default='sunrise')
     def solar(self, msg, latitude, longitude, sun_time):
         """Return next sun time"""
@@ -57,21 +63,21 @@ class SunriseSunset(BotPlugin):
         if sunset:
             requested_times.append('sunset')
         if astronomical_twilight:
-            requested_times.append('astronomical_twilight')
+            requested_times.append('astronomical_twilight_begin')
+            requested_times.append('astronomical_twilight_end')
         if civil_twilight:
-            requested_times.append('civil_twilight')
+            requested_times.append('civil_twilight_begin')
+            requested_times.append('civil_twilight_end')
         if day_length:
             requested_times.append('day_length')
         if nautical_twilight:
-            requested_times.append('nautical_twilight')
+            requested_times.append('nautical_twilight_begin')
+            requested_times.append('nautical_twilight_end')
         if solar_noon:
             requested_times.append('solar_noon')
         if 'results' in response:
             for requested_time in requested_times:
                 if requested_time in response['results']:
-                    # Add '_begin' to times that have a begin and end attribute
-                    if requested_time in ['astronomical_twilight', 'civil_twilight', 'nautical_twilight']:
-                        requested_time = requested_time+'_begin'
                     time = datetime.datetime.strptime(response['results'][requested_time], '%H:%M:%S %p')
                     today = datetime.datetime.today()
                     combined = datetime.datetime.combine(today.date(), time.time())
