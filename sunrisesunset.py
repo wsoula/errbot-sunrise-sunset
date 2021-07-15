@@ -18,7 +18,9 @@ class SunriseSunset(BotPlugin):
         if city is None:
             return self.sun_send(msg, latitude, longitude, {'sunrise': True})
         coordinates = self.return_coordinates(city)
-        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunrise': True})
+        if 'latitude' in coordinates:
+            return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunrise': True})
+        return 'Not a valid city '+str(city)
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
@@ -28,7 +30,9 @@ class SunriseSunset(BotPlugin):
         if city is None:
             return self.sun_send(msg, latitude, longitude, {'sunset': True})
         coordinates = self.return_coordinates(city)
-        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunset': True})
+        if 'latitude' in coordinates:
+            return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunset': True})
+        return 'Not a vlid city '+str(city)
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
@@ -48,17 +52,25 @@ class SunriseSunset(BotPlugin):
         if city is None:
             return self.sun_send(msg, latitude, longitude, parameters)
         coordinates = self.return_coordinates(city)
-        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], parameters)
+        if 'latitude' in coordinates:
+            return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], parameters)
+        return 'Not a valid city '+str(city)
 
     def return_coordinates(self, city):
         """Return latitude, longitude of a city"""
-        if city.upper() == 'DENVER':
-            coordinates = {'latitude': '39.7392',
-                           'longitude': '-104.9903'}
-        if city.upper() == 'AUSTIN':
-            coordinates = {'latitude': '30.2672',
-                           'longitude': '-97.7431'}
-        return coordinates
+        cities = {'DENVER': {'latitude': '39.7392', 'longitude': '-104.9903'},
+                  'AUSTIN': {'latitude': '30.2672', 'longitude': '-97.7431'},
+                  'SEATTLE': {'latitude': '47.6062', 'longitude': '-122.3321'},
+                  'MIAMI': {'latitude': '25.7617', 'longitude': '-80.1918'},
+                  'LONDON': {'latitude': '51.5074', 'longitude': '-0.1278'},
+                  'TOKYO': {'latitude': '35.6762', 'longitude': '139.6503'},
+                  'BEIJING': {'latitude': '39.9042', 'longitude': '116.4074'},
+                  'SYDNEY': {'latitude': '-33.8688', 'longitude': '151.2093'}}
+        if city.upper() in cities:
+            coordinates = {'latitude': cities[city.upper()]['latitude'],
+                           'longitude': cities[city.upper()]['longitude']}
+            return coordinates
+        return {}
 
     def sun_send(self, msg, latitude, longitude, parameters):
         """Lookup sun time"""
