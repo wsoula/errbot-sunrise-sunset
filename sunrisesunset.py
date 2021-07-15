@@ -24,11 +24,11 @@ class SunriseSunset(BotPlugin):
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
     @arg_botcmd('--city', dest='city', type=str, default=None)
     def sunset(self, msg, latitude, longitude, city):
-        """Return next sunrise"""
+        """Return next sunset"""
         if city is None:
             return self.sun_send(msg, latitude, longitude, {'sunset': True})
         coordinates = self.return_coordinates(city)
-        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunrise': True})
+        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunset': True})
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
@@ -48,7 +48,7 @@ class SunriseSunset(BotPlugin):
         if city is None:
             return self.sun_send(msg, latitude, longitude, parameters)
         coordinates = self.return_coordinates(city)
-        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunrise': True})
+        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], parameters)
 
     def return_coordinates(self, city):
         """Return latitude, longitude of a city"""
