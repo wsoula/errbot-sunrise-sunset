@@ -27,7 +27,15 @@ class SunriseSunset(BotPlugin):
     @arg_botcmd('--time', dest='sun_time', type=str, default='sunrise')
     def solar(self, msg, latitude, longitude, sun_time):
         """Return next sun time"""
-        return self.sun_send(msg, latitude, longitude, {sun_time: True})
+        parameters = {sun_time: True}
+        if sun_time == 'all':
+            parameters = {'astronomical_twilight': True,
+                          'nautical_twilight': True,
+                          'civil_twilight': True,
+                          'sunrise': True,
+                          'solar_noon': True,
+                          'sunset': True}
+        return self.sun_send(msg, latitude, longitude, parameters)
 
     def sun_send(self, msg, latitude, longitude, parameters):
         """Lookup sun time"""
