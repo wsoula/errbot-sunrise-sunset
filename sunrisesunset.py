@@ -62,7 +62,7 @@ class SunriseSunset(BotPlugin):
         if 'solar_noon' in parameters:
             solar_noon = parameters['solar_noon']
         # https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400&date=today
-        url = 'https://api.sunrise-sunset.org/json?lat='+latitude+'&lng='+longitude
+        url = 'https://api.sunrise-sunset.org/json?lat='+latitude+'&lng='+longitude+'&date=today'
         page = urllib.request.Request(url)
         response = json.loads(urllib.request.urlopen(page).read().decode('utf-8'))
         requested_times = []
