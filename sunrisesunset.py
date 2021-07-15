@@ -92,7 +92,7 @@ class SunriseSunset(BotPlugin):
                     combined = datetime.datetime.combine(today.date(), time.time())
                     combined_utc = pytz.timezone('UTC').localize(combined)
                     combined_local = combined_utc.astimezone(tz=tz.gettz('America/Denver'))
-                    results[requested_time] = str(combined_local)
+                    results[requested_time] = str(combined_local.strftime('%H:%M:%S'))
                 if requested_time == 'day_length':
                     results[requested_time] = str(response['results'][requested_time])
             result_string = ''
