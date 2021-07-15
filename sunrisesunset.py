@@ -12,20 +12,29 @@ class SunriseSunset(BotPlugin):
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
-    def sunrise(self, msg, latitude, longitude):
+    @arg_botcmd('--city', dest='city', type=str, default=None)
+    def sunrise(self, msg, latitude, longitude, city):
         """Return next sunrise"""
-        return self.sun_send(msg, latitude, longitude, {'sunrise': True})
+        if city is None:
+            return self.sun_send(msg, latitude, longitude, {'sunrise': True})
+        coordinates = self.return_coordinates(city)
+        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunrise': True})
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
-    def sunset(self, msg, latitude, longitude):
+    @arg_botcmd('--city', dest='city', type=str, default=None)
+    def sunset(self, msg, latitude, longitude, city):
         """Return next sunrise"""
-        return self.sun_send(msg, latitude, longitude, {'sunset': True})
+        if city is None:
+            return self.sun_send(msg, latitude, longitude, {'sunset': True})
+        coordinates = self.return_coordinates(city)
+        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunrise': True})
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
+    @arg_botcmd('--city', dest='city', type=str, default=None)
     @arg_botcmd('--time', dest='sun_time', type=str, default='sunrise')
-    def solar(self, msg, latitude, longitude, sun_time):
+    def solar(self, msg, latitude, longitude, sun_time, city):
         """Return next sun time"""
         parameters = {sun_time: True}
         if sun_time == 'all':
@@ -36,7 +45,20 @@ class SunriseSunset(BotPlugin):
                           'solar_noon': True,
                           'sunset': True,
                           'day_length': True}
-        return self.sun_send(msg, latitude, longitude, parameters)
+        if city is None:
+            return self.sun_send(msg, latitude, longitude, parameters)
+        coordinates = self.return_coordinates(city)
+        return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunrise': True})
+
+    def return_coordinates(self, city):
+        """Return latitude, longitude of a city"""
+        if city.upper() == 'DENVER':
+            coordinates = {'latitude': '39.7392',
+                           'longitude': '-104.9903'}
+        if city.upper() == 'AUSTIN':
+            coordinates = {'latitude': '30.2672',
+                           'longitude': '-97.7431'}
+        return coordinates
 
     def sun_send(self, msg, latitude, longitude, parameters):
         """Lookup sun time"""
