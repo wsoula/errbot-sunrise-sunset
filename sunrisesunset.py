@@ -42,12 +42,15 @@ class SunriseSunset(BotPlugin):
         """Return next sun time"""
         parameters = {sun_time: True}
         if sun_time == 'all':
-            parameters = {'astronomical_twilight': True,
-                          'nautical_twilight': True,
-                          'civil_twilight': True,
+            parameters = {'astronomical_twilight_begin': True,
+                          'nautical_twilight_begin': True,
+                          'civil_twilight_begin': True,
                           'sunrise': True,
                           'solar_noon': True,
                           'sunset': True,
+                          'astronomical_twilight_end': True,
+                          'nautical_twilight_end': True,
+                          'civil_twilight_end': True,
                           'day_length': True}
         if city is None:
             return self.sun_send(msg, latitude, longitude, parameters)
@@ -69,7 +72,7 @@ class SunriseSunset(BotPlugin):
                   'NEW YORK': {'latitude': '40.7128', 'longitude': '-74.0060'},
                   'DALLAS': {'latitude': '32.7767', 'longitude': '-96.7970'},
                   'HOUSTON': {'latitude': '29.7604', 'longitude': '-95.3698'},
-                  'CHGICAGO': {'latitude': '41.8781', 'longitude': '-87.6298'}}
+                  'CHICAGO': {'latitude': '41.8781', 'longitude': '-87.6298'}}
         if city.upper() in cities:
             coordinates = {'latitude': cities[city.upper()]['latitude'],
                            'longitude': cities[city.upper()]['longitude']}
@@ -87,15 +90,33 @@ class SunriseSunset(BotPlugin):
         astronomical_twilight = False
         if 'astronomical_twilight' in parameters:
             astronomical_twilight = parameters['astronomical_twilight']
+        astronomical_twilight_begin = False
+        if 'astronomical_twilight_begin' in parameters:
+            astronomical_twilight_begin = parameters['astronomical_twilight_begin']
+        astronomical_twilight_end = False
+        if 'astronomical_twilight_end' in parameters:
+            astronomical_twilight_end = parameters['astronomical_twilight_end']
         civil_twilight = False
         if 'civil_twilight' in parameters:
             civil_twilight = parameters['civil_twilight']
+        civil_twilight_begin = False
+        if 'civil_twilight_begin' in parameters:
+            civil_twilight_begin = parameters['civil_twilight_begin']
+        civil_twilight_end = False
+        if 'civil_twilight_end' in parameters:
+            civil_twilight_end = parameters['civil_twilight_end']
         day_length = False
         if 'day_length' in parameters:
             day_length = parameters['day_length']
         nautical_twilight = False
         if 'nautical_twilight' in parameters:
             nautical_twilight = parameters['nautical_twilight']
+        nautical_twilight_begin = False
+        if 'nautical_twilight_begin' in parameters:
+            nautical_twilight_begin = parameters['nautical_twilight_begin']
+        nautical_twilight_end = False
+        if 'nautical_twilight_end' in parameters:
+            nautical_twilight_end = parameters['nautical_twilight_end']
         solar_noon = False
         if 'solar_noon' in parameters:
             solar_noon = parameters['solar_noon']
@@ -108,18 +129,30 @@ class SunriseSunset(BotPlugin):
         if astronomical_twilight:
             requested_times.append('astronomical_twilight_begin')
             requested_times.append('astronomical_twilight_end')
+        if astronomical_twilight_begin:
+            requested_times.append('astronomical_twilight_begin')
         if nautical_twilight:
             requested_times.append('nautical_twilight_begin')
             requested_times.append('nautical_twilight_end')
+        if nautical_twilight_begin:
+            requested_times.append('nautical_twilight_begin')
         if civil_twilight:
             requested_times.append('civil_twilight_begin')
             requested_times.append('civil_twilight_end')
+        if civil_twilight_begin:
+            requested_times.append('civil_twilight_begin')
         if sunrise:
             requested_times.append('sunrise')
         if solar_noon:
             requested_times.append('solar_noon')
         if sunset:
             requested_times.append('sunset')
+        if civil_twilight_end:
+            requested_times.append('civil_twilight_end')
+        if nautical_twilight_end:
+            requested_times.append('nautical_twilight_end')
+        if astronomical_twilight_end:
+            requested_times.append('astronomical_twilight_end')
         if day_length:
             requested_times.append('day_length')
         if 'results' in response:
