@@ -65,7 +65,11 @@ class SunriseSunset(BotPlugin):
                   'LONDON': {'latitude': '51.5074', 'longitude': '-0.1278'},
                   'TOKYO': {'latitude': '35.6762', 'longitude': '139.6503'},
                   'BEIJING': {'latitude': '39.9042', 'longitude': '116.4074'},
-                  'SYDNEY': {'latitude': '-33.8688', 'longitude': '151.2093'}}
+                  'SYDNEY': {'latitude': '-33.8688', 'longitude': '151.2093'},
+                  'NEW YORK': {'latitude': '40.7128', 'longitude': '-74.0060'},
+                  'DALLAS': {'latitude': '32.7767', 'longitude': '-96.7970'},
+                  'HOUSTON': {'latitude': '29.7604', 'longitude': '-95.3698'},
+                  'CHGICAGO': {'latitude': '41.8781', 'longitude': '-87.6298'}}
         if city.upper() in cities:
             coordinates = {'latitude': cities[city.upper()]['latitude'],
                            'longitude': cities[city.upper()]['longitude']}
