@@ -34,7 +34,8 @@ class SunriseSunset(BotPlugin):
                           'civil_twilight': True,
                           'sunrise': True,
                           'solar_noon': True,
-                          'sunset': True}
+                          'sunset': True,
+                          'day_length': True}
         return self.sun_send(msg, latitude, longitude, parameters)
 
     def sun_send(self, msg, latitude, longitude, parameters):
@@ -85,12 +86,14 @@ class SunriseSunset(BotPlugin):
             requested_times.append('solar_noon')
         if 'results' in response:
             for requested_time in requested_times:
-                if requested_time in response['results']:
+                if requested_time in response['results'] and requested_time != 'day_length':
                     time = datetime.datetime.strptime(response['results'][requested_time], '%H:%M:%S %p')
                     today = datetime.datetime.today()
                     combined = datetime.datetime.combine(today.date(), time.time())
                     combined_utc = pytz.timezone('UTC').localize(combined)
                     combined_local = combined_utc.astimezone(tz=tz.gettz('America/Denver'))
                     results[requested_time] = str(combined_local)
+                if requested_time == 'day_length':
+                    results[requested_time] = str(response['results'][requested_time])
             return results
         return 'No results in response: '+str(response)
