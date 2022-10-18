@@ -1,4 +1,5 @@
 """ Tests for plugin """
+import sunrisesunset  # for coverage
 pytest_plugins = ['errbot.backends.test']
 
 extra_plugin_dir = '.'
