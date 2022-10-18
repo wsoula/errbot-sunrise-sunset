@@ -32,7 +32,7 @@ class SunriseSunset(BotPlugin):
         coordinates = self.return_coordinates(city)
         if 'latitude' in coordinates:
             return self.sun_send(msg, coordinates['latitude'], coordinates['longitude'], {'sunset': True})
-        return 'Not a vlid city '+str(city)
+        return 'Not a valid city '+str(city)
 
     @arg_botcmd('--latitude', dest='latitude', type=str, default='39.7392')
     @arg_botcmd('--longitude', dest='longitude', type=str, default='-104.9903')
